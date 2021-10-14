@@ -1,4 +1,4 @@
-FROM debian:stable-slim AS snow-build
+FROM python:3.9-slim AS snow-build
 
 WORKDIR /work
 
@@ -36,7 +36,7 @@ RUN apt-get -qq update \
     && ./snowsql -Uv \
     && echo "[connections]\naccountname = $sf_account\n\n[options]\nnoup = true" > /var/snowsql/.snowsql/config
 
-FROM sqitch/sqitch:latest
+FROM ghcr.io/kolenaio/docker-sqitch/sqitch:1.1.0
 
 # Install runtime dependencies, remove unnecesary files, and create log dir.
 USER root
@@ -54,5 +54,5 @@ COPY --from=snow-build /work/odbc /usr/lib/snowflake/odbc/
 COPY --from=snow-build /etc/odbc* /etc/
 
 # The .snowsql directory is copied to /var.
-USER sqitch
+WORKDIR /home
 ENV SNOWSQL_DOWNLOAD_DIR /var/.snowsql

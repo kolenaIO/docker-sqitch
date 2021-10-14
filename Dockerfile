@@ -1,4 +1,4 @@
-FROM debian:stable-slim AS sqitch-build
+FROM python:3.9-slim AS sqitch-build
 
 # Install system dependencies.
 WORKDIR /work
@@ -31,7 +31,7 @@ RUN perl Build.PL --quiet --install_base /app --etcdir /etc/sqitch \
 
 ################################################################################
 # Copy to the final image without all the build stuff.
-FROM debian:stable-slim AS sqitch
+FROM python:3.9-slim AS sqitch
 
 # Install runtime system dependencies and remove unnecesary files.
 RUN mkdir -p /usr/share/man/man1 /usr/share/man/man7 \
@@ -55,6 +55,8 @@ RUN mkdir -p /usr/share/man/man1 /usr/share/man/man7 \
     && groupadd -r sqitch --gid=1024 \
     && useradd -r -g sqitch --uid=1024 -d /home sqitch \
     && chown -R sqitch:sqitch /home
+
+RUN apt-get update && apt-get install -y python3-pip
 
 # Copy the app and config from the build image.
 COPY --from=sqitch-build /app .
