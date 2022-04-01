@@ -1,0 +1,17 @@
+name: CI (build)
+on:
+  push:
+    branches:
+      - main
+      - with-python
+  pull_request:
+
+jobs:
+  build:
+    name: Builds image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Build the Image
+        run: ./build
