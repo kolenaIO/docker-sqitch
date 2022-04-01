@@ -42,7 +42,6 @@ FROM ghcr.io/kolenaio/docker-sqitch/sqitch:1.1.0
 USER root
 RUN apt-get -qq update \
     && apt-get -qq --no-install-recommends install unixodbc \
-    && apt-get -qq --no-install-recommends install git \
     && apt-get clean \
     && rm -rf /var/cache/apt/* /var/lib/apt/lists/* \
     && rm -rf /man /usr/share/man /usr/share/doc \
