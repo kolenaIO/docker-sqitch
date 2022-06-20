@@ -10,7 +10,7 @@ Steps for building Kolena sqitch images:
 ./build
 docker tag sqitch/sqitch:1.1.0 ghcr.io/kolenaio/docker-sqitch/sqitch:1.1.0
 docker push ghcr.io/kolenaio/docker-sqitch/sqitch:1.1.0
-env DIR=snowflake ./build --build-arg sf_account=ara65239
+env DIR=snowflake ./build --build-arg sf_account=kolena-eng
 docker tag sqitch/sqitch:1.1.0-snowflake ghcr.io/kolenaio/docker-sqitch/sqitch:1.1.0-snowflake
 docker push ghcr.io/kolenaio/docker-sqitch/sqitch:1.1.0-snowflake
 ```
