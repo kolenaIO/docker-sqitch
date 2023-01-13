@@ -6,7 +6,8 @@ NAME=sqitch
 VERSION=1.1.0
 
 DIR=${DIR:=.}
-REGISTRY=${REGISTRY:="$NAME"}
+PY_VERSION=${PY_VERSION:="3.9"}
+REGISTRY=${REGISTRY:="ghcr.io/kolenaio/docker-sqitch"}
 GIT_BRANCH=${GIT_BRANCH:-${TRAVIS_BRANCH:-$(git rev-parse --abbrev-ref HEAD)}}
 
 # For main Sqitch build, the main tag is "latest" and there
@@ -28,7 +29,7 @@ if [[ "$GIT_BRANCH" =~ (^|/)main$ ]]; then
 fi
 
 # Always include the version tag.
-tagopt+=(--tag "${REGISTRY}/${NAME}:${VERSION}${PKG}")
+tagopt+=(--tag "${REGISTRY}/${NAME}:${VERSION}${PKG}-py${PY_VERSION}")
 
 docker build --pull \
   --label org.opencontainers.image.created=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
@@ -43,6 +44,8 @@ docker build --pull \
   --label org.opencontainers.image.ref.name="sqitch${PKG}-${VERSION}" \
   --label org.opencontainers.image.title="Sqitch" \
   --label org.opencontainers.image.description="Sane database change management" \
+  --platform linux/amd64 \
   "${tagopt[@]}" \
   --build-arg "VERSION=${VERSION}" \
+  --build-arg "PY_VERSION=${PY_VERSION}" \
   "$@" .
