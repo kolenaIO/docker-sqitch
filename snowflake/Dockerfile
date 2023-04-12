@@ -8,8 +8,8 @@ WORKDIR /work
 # https://docs.snowflake.net/manuals/user-guide/snowsql-install-config.html#downloading-the-snowsql-installer
 # https://docs.snowflake.net/manuals/release-notes/client-change-log-snowsql.html
 # https://sfc-repo.snowflakecomputing.com/index.html
-ADD https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.16-linux_x86_64.bash snowsql.bash
-ADD https://sfc-repo.snowflakecomputing.com/odbc/linux/2.23.3/snowflake_linux_x8664_odbc-2.23.3.tgz snowflake_linux_x8664_odbc.tgz
+ADD https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.25-linux_x86_64.bash snowsql.bash
+ADD https://sfc-repo.snowflakecomputing.com/odbc/linux/2.25.10/snowflake_linux_x8664_odbc-2.25.10.tgz snowflake_linux_x8664_odbc.tgz
 COPY conf ./
 
 # Tell SnowSQL where to store its versions and config. Need to keep it inside
@@ -54,6 +54,7 @@ COPY --from=snow-build /work/snowsql /bin/
 COPY --from=snow-build --chown=sqitch:sqitch /var/snowsql /var/
 COPY --from=snow-build /work/odbc /usr/lib/snowflake/odbc/
 COPY --from=snow-build /etc/odbc* /etc/
+RUN chmod --recursive a+rx /var/.snowsql
 
 # The .snowsql directory is copied to /var.
 WORKDIR /home
