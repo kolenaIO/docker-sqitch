@@ -7,7 +7,7 @@ Kolena
 Steps for building Kolena sqitch images:
 
 ```sh
-for py_version in 3.7 3.8 3.9 3.10
+for py_version in 3.7 3.8 3.9 3.10 3.11
 do
     env PY_VERSION=${py_version} ./build --build-arg sf_account=kolena-eng
     docker push ghcr.io/kolenaio/docker-sqitch/sqitch:1.1.0-py${py_version}
