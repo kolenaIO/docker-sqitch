@@ -1,4 +1,6 @@
-FROM python:3.9-slim AS snow-build
+ARG VERSION
+ARG PY_VERSION
+FROM python:${PY_VERSION}-slim AS snow-build
 
 WORKDIR /work
 
@@ -36,7 +38,7 @@ RUN apt-get -qq update \
     && ./snowsql -Uv \
     && echo "[connections]\naccountname = $sf_account\n\n[options]\nnoup = true" > /var/snowsql/.snowsql/config
 
-FROM ghcr.io/kolenaio/docker-sqitch/sqitch:1.1.0
+FROM ghcr.io/kolenaio/docker-sqitch/sqitch:${VERSION}-py${PY_VERSION}
 
 # Install runtime dependencies, remove unnecesary files, and create log dir.
 USER root

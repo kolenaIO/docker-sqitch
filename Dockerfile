@@ -1,4 +1,5 @@
-FROM python:3.9-slim AS sqitch-build
+ARG PY_VERSION
+FROM python:${PY_VERSION}-slim AS sqitch-build
 
 # Install system dependencies.
 WORKDIR /work
@@ -31,7 +32,7 @@ RUN perl Build.PL --quiet --install_base /app --etcdir /etc/sqitch \
 
 ################################################################################
 # Copy to the final image without all the build stuff.
-FROM python:3.9-slim AS sqitch
+FROM python:${PY_VERSION}-slim AS sqitch
 
 # Install runtime system dependencies and remove unnecesary files.
 RUN mkdir -p /usr/share/man/man1 /usr/share/man/man7 \
@@ -56,7 +57,8 @@ RUN mkdir -p /usr/share/man/man1 /usr/share/man/man7 \
     && useradd -r -g sqitch --uid=1024 -d /home sqitch \
     && chown -R sqitch:sqitch /home
 
-RUN apt-get update && apt-get install -y python3-pip
+RUN apt-get update && apt-get install -y python3-pip curl git-lfs
+RUN pip install poetry==1.2.2
 
 # Copy the app and config from the build image.
 COPY --from=sqitch-build /app .

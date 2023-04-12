@@ -6,7 +6,9 @@ NAME=sqitch
 VERSION=1.3.1
 
 DIR=${DIR:=.}
-REGISTRY=${REGISTRY:="$NAME"}
+PY_VERSION=${PY_VERSION:="3.9"}
+REGISTRY=${REGISTRY:="ghcr.io/kolenaio/docker-sqitch"}
+GIT_BRANCH=${GIT_BRANCH:-${TRAVIS_BRANCH:-$(git rev-parse --abbrev-ref HEAD)}}
 
 # For main Sqitch build, the main tag is "latest" and there
 # is no sub-package.
@@ -26,13 +28,8 @@ tagopt=(
     --tag "${REGISTRY}/${NAME}:${VERSION}${PKG}"
 )
 
-# Include the git tag if differnt from the version.
-if [ "$GITHUB_REF_TYPE" == "tag" ]; then
-    GIT_TAG=${GITHUB_REF/refs\/tags\//}
-    if [ "$GIT_TAG" != "$VERSION" ]; then
-        tagopt+=(--tag "${REGISTRY}/${NAME}:${GIT_TAG}${PKG}")
-    fi
-fi
+# Always include the version tag.
+tagopt+=(--tag "${REGISTRY}/${NAME}:${VERSION}${PKG}-py${PY_VERSION}")
 
 # The Oracle and Snowflake images require amd64.
 docker buildx build --platform=linux/amd64 --pull \
@@ -50,4 +47,5 @@ docker buildx build --platform=linux/amd64 --pull \
   --label org.opencontainers.image.description="Sensible database change management" \
   "${tagopt[@]}" \
   --build-arg "VERSION=${VERSION}" \
+  --build-arg "PY_VERSION=${PY_VERSION}" \
   "$@" .
