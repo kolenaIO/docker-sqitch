@@ -31,7 +31,7 @@ curl -L https://git.io/JJKCn -o sqitch && chmod +x sqitch
 
 ```bat
 docker pull sqitch/sqitch
-curl -L https://git.io/JTAi6 -o sqitch.bat
+WebRequest -Uri "https://git.io/JTAi6" -OutFile "sqitch.bat"
 .\sqitch help
 ```
 
@@ -39,9 +39,9 @@ Description
 -----------
 
 This project is the source for creating the official [Sqitch Project] Docker
-Image. It's built on [stable Debian slim] in an effort to keep the image as
+Image. It's built on [Debian bookworm-slim] in an effort to keep the image as
 small as possible while supporting all known engines. It includes support for
-managing [PostgreSQL], [CokroachDB], [YugabyteDB], [SQLite], [MariaDB]
+managing [PostgreSQL], [CockroachDB], [YugabyteDB], [SQLite], [MariaDB]
 ([MySQL]), and [Firebird] databases, and other images may be built to support
 for the other database engines that Sqitch supports.
 
@@ -82,9 +82,11 @@ Notes
     for it to land). In the meantime you can [use a NAT gateway
     container](https://github.com/qoomon/docker-host) to forward traffic to the
     Docker host.
-*   Custom images for [Oracle], [Snowflake], [Exasol], or [Vertica] can be built
-    by downloading the appropriate binary files and using the `Dockerfile`s in
-    the appropriately-named subdirectories of this repository.
+*   Custom images for [Oracle], [Snowflake], or [Exasol] can be built by
+    downloading the appropriate binary files and using the `Dockerfile`s in the
+    appropriately-named subdirectories of this repository.
+*   The Sqitch image is built with AMD64 and ARM64 support, but the [Oracle],
+    [Snowflake] and [Exasol] images can currently only be built for AMD64.
 *   In an effort to keep things as simple as possible, the only editor included
     and configured for use in the image is [nano]. This is a very simple, tiny
     text editor suitable for editing change descriptions and the like. Its
@@ -93,7 +95,7 @@ Notes
     one based on this image and add whatever editors you like.
 
   [Sqitch Project]: https://sqitch.org
-  [stable Debian slim]: https://docs.docker.com/samples/library/debian/#debiansuite-slim
+  [Debian bookworm-slim]: https://hub.docker.com/_/debian/tags?name=bookworm-slim
   [PostgreSQL]: https://postgresql.org
   [YugabyteDB]: https://www.yugabyte.com/yugabytedb/
   [CockroachDB]: https://www.cockroachlabs.com/product/
@@ -106,5 +108,4 @@ Notes
   [Oracle]: https://www.oracle.com/database/
   [Snowflake]:https://www.snowflake.com
   [Exasol]:https://www.exasol.com/
-  [Vertica]: https://www.vertica.com
   [nano]: https://www.nano-editor.org/
