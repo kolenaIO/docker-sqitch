@@ -58,7 +58,7 @@ RUN mkdir -p /usr/share/man/man1 /usr/share/man/man7 \
     && chown -R sqitch:sqitch /home
 
 RUN apt-get update && apt-get install -y python3-pip curl git-lfs
-RUN pip install poetry==1.2.2
+RUN pip install poetry==1.7.1
 
 # Copy the app and config from the build image.
 COPY --from=sqitch-build /app .
